@@ -1,0 +1,42 @@
+{
+  "version": "0",
+  "id": "52d15c46-1bbc-47da-84e4-cef8c4dfc5b7",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.logs",
+  "account": "xxx",
+  "time": "2017-08-20T18:50:54Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+      "eventVersion": "1.04",
+      "userIdentity": {
+          "type": "IAMUser",
+          "principalId": "AIDAIP5G4Z37ZNNNKVEUW",
+          "arn": "arn:aws:iam::xxx:user/yancui",
+          "accountId": "xxx",
+          "accessKeyId": "xxx",
+          "userName": "yancui",
+          "sessionContext": {
+              "attributes": {
+                  "mfaAuthenticated": "false",
+                  "creationDate": "2017-08-20T18:50:48Z"
+              }
+          },
+          "invokedBy": "cloudformation.amazonaws.com"
+      },
+      "eventTime": "2017-08-20T18:50:54Z",
+      "eventSource": "logs.amazonaws.com",
+      "eventName": "CreateLogGroup",
+      "awsRegion": "us-east-1",
+      "sourceIPAddress": "cloudformation.amazonaws.com",
+      "userAgent": "cloudformation.amazonaws.com",
+      "requestParameters": {
+          "logGroupName": "/aws/lambda/logging-demo-dev-api"
+      },
+      "responseElements": null,
+      "requestID": "7f14f744-85d8-11e7-b277-a3957840b2c0",
+      "eventID": "ddcd560b-b39e-4991-8e2b-e39fd8d7dabf",
+      "eventType": "AwsApiCall",
+      "apiVersion": "20140328"
+  }
+}
