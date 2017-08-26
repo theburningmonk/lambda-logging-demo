@@ -20,6 +20,9 @@ functions:
   ship-logs:
     handler: functions/ship-logs/handler.handler
     description: Sends CloudWatch logs to LogStash
+    environment:
+      logstash_host: insert
+      logstash_port: insert
 
   set-retention:
     handler: functions/set-retention/handler.handler
@@ -54,6 +57,7 @@ functions:
                 - logs.amazonaws.com
               eventName:
                 - CreateLogGroup
+
 resources:
   Resources:
     LambdaInvokePermission:
