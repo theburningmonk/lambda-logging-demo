@@ -1,16 +1,5 @@
 {
-  "messageType": "DATA_MESSAGE",
-  "owner": "499014364541",
-  "logGroup": "/aws/lambda/log",
-  "logStream": "2017/08/20/[$LATEST]40237edd48f34b24970905cc8e7aa220",
-  "subscriptionFilters": [
-      "ship-logs"
-  ],
-  "logEvents": [
-      {
-          "id": "33523879000509538715657644838039675459397576285294297088",
-          "timestamp": 1503262725172,
-          "message": "START RequestId: 5ae184ed-85ea-11e7-a771-25a3e4ddb615 Version: $LATEST\n"
-      }
-  ]
+  "awslogs": {
+    "data": "H4sIAAAAAAAAAL2RS2/bMBCE/wvRo2nxKZK+GahjBMgDqHVqbBiUtHWJSpQq0nYDy/+9jJMcegjQIGgvPAx3B9/MnlALIdgdFI89oBn6PC/m29vFajVfLtAEdUcPQ5KFMYQKngspaJKbbrccun2ffjJ7DFlj27K2WZJ3zu9wC3FwVcA1tF16DjhCiNj27nl1FQewbdplhKqM6Izl2cOnm3mxWBWbWlorRJlbA1oA1aZktioVB8K14Ywli7AvQzW4PrrOX7kmwhDQ7AHdXCCezbdvogTw9auKNheexQF8fLI4IVcnLM4ll0ILaRiXUgiZYudM5iqnXBMhNCc5MZprQdKkYkRqKRjRCS26VGe0bWqGSsKV5pQrQ8zkteaX1JhozPKC0RlnM6qmaeTrOhJDqlpJi7W1OaYUFNaqNDgvv1nKNFW1pOt4e393Xdx/ub5bjpSMVbf3ceyT9fbg4DjG71DuB5+yt53/Ma26du0TGPyKg60i1FcOmjqFPSF4ip143uuX3Ab4uU85t5e6/ob6z2rerACdz5OPHcH8/yPwqR5b1zQuQNX5OoyNjeCrx4+d4h2u//Ygm/NvP7mOnyQEAAA="
+  }
 }
