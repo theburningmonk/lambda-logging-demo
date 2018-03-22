@@ -4,7 +4,7 @@ const co             = require('co');
 const Promise        = require('bluebird');
 const AWS            = require('aws-sdk');
 const cloudWatchLogs = Promise.promisifyAll(new AWS.CloudWatchLogs());
-const retentionDays  = 30;
+const retentionDays  = process.env.retention_days;
 
 let setExpiry = function* (logGroupName) {
   let params = {

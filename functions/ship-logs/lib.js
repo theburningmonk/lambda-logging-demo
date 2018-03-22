@@ -3,36 +3,36 @@
 const co      = require('co');
 const Promise = require('bluebird');
 const parse   = require('./parse');
-const tls     = require('tls');
+const net     = require('net');
+const host    = process.env.logstash_host;
+const port    = process.env.logstash_port;
+const token   = process.env.token;
 
 let processAll = co.wrap(function* (logGroup, logStream, logEvents) {
-  let lambdaVer = parse.lambdaVersion(logStream);
-
-  let tlsOptions = {
-    host: process.env.logstash_host,
-    port: process.env.logstash_port
-  };
+  let lambdaVersion = parse.lambdaVersion(logStream);
+  let functionName  = parse.functionName(logGroup);
 
   yield new Promise((resolve, reject) => {
-    let socket = tls.connect(tlsOptions, function() {
-      console.log(`connected to ${process.env.logstash_host}:${process.env.logstash_port}`);
+    let socket = net.connect(port, host, function() {
       socket.setEncoding('utf8');
 
       for (let logEvent of logEvents) {
         try {
-          let log = parse.logMessage(logEvent.message);
-          log.level         = log.level || 'debug';
-          log.logStream     = logStream;
-          log.logGroup      = logGroup;
-          log.lambdaVersion = lambdaVer;
-          log.fields        = log.fields || {};
-          log.type          = "cloudwatch";
-          log['@timestamp'] = new Date(logEvent.timestamp);
+          let log = parse.logMessage(logEvent);
+          if (log) {
+            log.logStream     = logStream;
+            log.logGroup      = logGroup;
+            log.functionName  = functionName;
+            log.lambdaVersion = lambdaVersion;
+            log.fields        = log.fields || {};
+            log.type          = "cloudwatch";
+            log.token         = token;
 
-          console.log("sending : ", log);
-          socket.write(JSON.stringify(log) + '\n');
+            socket.write(JSON.stringify(log) + '\n');
+          }
+        
         } catch (err) {
-          console.log(err, err.stack);
+          console.error(err.message);
         }
       }
 

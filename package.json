@@ -9,12 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.213.1",
     "bluebird": "^3.5.0",
     "co": "^4.6.0"
   },
   "devDependencies": {
-    "aws-sdk": "^2.100.0",
     "serverless": "^1.20.2",
+    "serverless-iam-roles-per-function": "^0.1.5",
     "serverless-pseudo-parameters": "^1.1.5"
   }
 }

@@ -1,32 +1,35 @@
-service: logging-demo
+service: cloudwatch-logs
 
 plugins:
  - serverless-pseudo-parameters
+ - serverless-iam-roles-per-function
 
 provider:
   name: aws
   runtime: nodejs6.10
   stage: dev
   region: us-east-1
-
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "logs:PutRetentionPolicy"
-        - "logs:PutSubscriptionFilter"
-      Resource: "*"
+  versionFunctions: false
   
 functions:
-  ship-logs:
+  ship-logs-to-logzio:
     handler: functions/ship-logs/handler.handler
-    description: Sends CloudWatch logs to LogStash
+    description: Sends CloudWatch logs to Logz.io
     environment:
-      logstash_host: insert
-      logstash_port: insert
+      logstash_host: <INSERT VALUE HERE>
+      logstash_port: <INSERT VALUE HERE>
+      token: <INSERT VALUE HERE>
 
   set-retention:
     handler: functions/set-retention/handler.handler
-    description: Sets the log retention policy to 30 days
+    description: Sets the log retention policy to the specified no. of days
+    environment:
+      retention_days: 7
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "logs:PutRetentionPolicy"
+        Resource: "*"
     events:
       - cloudwatchEvent:
           event:
@@ -42,9 +45,16 @@ functions:
 
   subscribe:
     handler: functions/subscribe/handler.handler
-    description: Subscribe logs to the ship-log function
+    description: Subscribe logs to the ship-logs-to-logzio function
     environment:
-      DEST_FUNC: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${self:provider.stage}-ship-logs"
+      dest_func: "${self:service}-${self:provider.stage}-ship-logs-to-logzio"
+      account_id: "#{AWS::AccountId}"
+      prefix: "/"
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "logs:PutSubscriptionFilter"
+        Resource: "*"
     events:
       - cloudwatchEvent:
           event:
@@ -67,5 +77,5 @@ resources:
         FunctionName:
           Fn::Join:
             - ""
-            - - "Ref" : "ShipDashlogsLambdaFunction"
+            - - "Ref" : "ShipDashlogsDashtoDashlogzioLambdaFunction"
         Principal: logs.#{AWS::Region}.amazonaws.com
