@@ -13,7 +13,7 @@
         "invoke",
         "local",
         "-f",
-        "ship-logs",
+        "ship-logs-to-logzio",
         "-p",
         "events/log-message.json"
       ]
