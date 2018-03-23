@@ -49,7 +49,7 @@ functions:
     environment:
       dest_func: "${self:service}-${self:provider.stage}-ship-logs-to-logzio"
       account_id: "#{AWS::AccountId}"
-      prefix: "/"
+      prefix: "/aws/lambda"
     iamRoleStatements:
       - Effect: "Allow"
         Action:

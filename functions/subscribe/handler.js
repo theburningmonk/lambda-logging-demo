@@ -6,6 +6,7 @@ const AWS            = require('aws-sdk');
 const cloudWatchLogs = Promise.promisifyAll(new AWS.CloudWatchLogs());
 const accountId      = process.env.account_id;
 const region         = AWS.config.region;
+const prefix         = process.env.prefix;
 
 function getDestFuncArn() {
   // a Lambda function ARN looks like this:
