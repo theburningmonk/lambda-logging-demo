@@ -45,6 +45,7 @@ module.exports.handler = co.wrap(function* (event, context, callback) {
   let logGroupName = event.detail.requestParameters.logGroupName;
   console.log(`log group: ${logGroupName}`);
 
+  let destFuncArn = getDestFuncArn();
   let destFuncName = getDestFuncName();
 
   if (logGroupName === `/aws/lambda/${destFuncName}`) {
