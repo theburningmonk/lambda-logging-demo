@@ -5,10 +5,9 @@ const Promise        = require('bluebird');
 const AWS            = require('aws-sdk');
 const cloudWatchLogs = Promise.promisifyAll(new AWS.CloudWatchLogs());
 const accountId      = process.env.account_id;
-const destFuncArn    = getDestinationFunctionArn();
-const destFuncName   = destFuncArn.split(":").reverse()[0];
+const region         = AWS.config.region;
 
-function getDestinationFunctionArn() {
+function getDestFuncArn() {
   // a Lambda function ARN looks like this:
   // arn:aws:lambda:<region>:<account id>:function:<function name>
   let destFunc = process.env.dest_func;
@@ -23,9 +22,13 @@ function getDestinationFunctionArn() {
   }
 }
 
+function getDestFuncName() {
+  return getDestFuncArn().split(":").reverse()[0];
+}
+
 let subscribe = function* (logGroupName) {
   let options = {
-    destinationArn : destFuncArn,
+    destinationArn : getDestFuncArn(),
     logGroupName   : logGroupName,
     filterName     : 'ship-logs',
     filterPattern  : '[timestamp=*Z, request_id="*-*", event]'
@@ -40,6 +43,8 @@ module.exports.handler = co.wrap(function* (event, context, callback) {
   // eg. /aws/lambda/logging-demo-dev-api
   let logGroupName = event.detail.requestParameters.logGroupName;
   console.log(`log group: ${logGroupName}`);
+
+  let destFuncName = getDestFuncName();
 
   if (logGroupName === `/aws/lambda/${destFuncName}`) {
     console.log(`ignoring the log group for [${destFuncName}] function to avoid invocation loop!`);
