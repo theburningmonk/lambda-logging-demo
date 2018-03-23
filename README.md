@@ -5,7 +5,7 @@ A group of Lambda functions for:
 * auto-subscribe new log groups to the aforementioned function so you don't have to subscribe them manually
 * auto-updates the retention policy of new log groups to 7 days (configurable)
 
-To deploy this function: 
+## Deployment
 
 1. insert the `logstash_host`, `logstash_port` and `token` in the `serverless.yml` file (under the `ship-logs-to-logzio` function's environment variables).
 
@@ -26,3 +26,9 @@ ship-logs-to-logzio:
 ```
 
 2. run `./build.sh deploy dev` to deploy to a stage called "dev"
+
+## Updating existing log groups
+
+1. open the `process_all.js` script, and fill in the missing configuration values
+
+2. run `node process_all.js`
