@@ -15,6 +15,7 @@ functions:
   ship-logs-to-logzio:
     handler: functions/ship-logs/handler.handler
     description: Sends CloudWatch logs to Logz.io
+    memorySize: 128
     environment:
       logstash_host: <INSERT VALUE HERE>
       logstash_port: <INSERT VALUE HERE>
@@ -23,6 +24,7 @@ functions:
   set-retention:
     handler: functions/set-retention/handler.handler
     description: Sets the log retention policy to the specified no. of days
+    memorySize: 128
     environment:
       retention_days: 7
     iamRoleStatements:
@@ -46,6 +48,7 @@ functions:
   subscribe:
     handler: functions/subscribe/handler.handler
     description: Subscribe logs to the ship-logs-to-logzio function
+    memorySize: 128
     environment:
       dest_func: "${self:service}-${self:provider.stage}-ship-logs-to-logzio"
       account_id: "#{AWS::AccountId}"
