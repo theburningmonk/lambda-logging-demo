@@ -20,6 +20,11 @@ functions:
       logstash_host: <INSERT VALUE HERE>
       logstash_port: <INSERT VALUE HERE>
       token: <INSERT VALUE HERE>
+    iamRoleStatementsName: ship-logs-role
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: "cloudwatch:PutMetricData"
+        Resource: "*"
 
   set-retention:
     handler: functions/set-retention/handler.handler

@@ -1,12 +1,14 @@
 'use strict';
 
-const co      = require('co');
-const Promise = require('bluebird');
-const parse   = require('./parse');
-const net     = require('net');
-const host    = process.env.logstash_host;
-const port    = process.env.logstash_port;
-const token   = process.env.token;
+const _          = require('lodash');
+const co         = require('co');
+const Promise    = require('bluebird');
+const parse      = require('./parse');
+const cloudwatch = require('./cloudwatch');
+const net        = require('net');
+const host       = process.env.logstash_host;
+const port       = process.env.logstash_port;
+const token      = process.env.token;
 
 let sendLogs = co.wrap(function* (logs) {
   yield new Promise((resolve, reject) => {
