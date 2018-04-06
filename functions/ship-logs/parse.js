@@ -98,7 +98,7 @@ let parseCustomMetric = function (functionName, version, logEvent) {
   }
 
   // MONITORING|metric_value|metric_unit|metric_name|namespace|dimension1=value1, dimension2=value2, ...
-  let metricData  = logMessage.split('|');
+  let metricData  = event.split('|');
   let metricValue = parseFloat(metricData[1]);
   let metricUnit  = toCamelCase(metricData[2].trim());
   let metricName  = metricData[3].trim();
