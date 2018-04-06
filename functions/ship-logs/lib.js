@@ -52,7 +52,7 @@ let processAll = co.wrap(function* (logGroup, logStream, logEvents) {
   }
 
   if (result.customMetrics) {
-    yield publishMetrics(customMetrics);
+    yield publishMetrics(result.customMetrics);
   }
 });
 
