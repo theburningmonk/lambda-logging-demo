@@ -1,5 +1,12 @@
 'use strict';
 
+const pricePerGbSecond = 0.00001667
+
+let calCostForInvocation = function (memorySize, billedDuration) {
+  let raw = pricePerGbSecond * (memorySize / 1024) * (billedDuration / 1000);
+  return raw.toFixed(9);
+}
+
 // logGroup looks like this:
 //    "logGroup": "/aws/lambda/service-env-funcName"
 let parseFunctionName = function (logGroup) {
@@ -151,6 +158,7 @@ let parseUsageMetrics = function (functionName, version, logEvent) {
     let billedDuration = parseFloatWith(/Billed Duration: (.*) ms/i, parts[2]);
     let memorySize     = parseFloatWith(/Memory Size: (.*) MB/i, parts[3]);
     let memoryUsed     = parseFloatWith(/Max Memory Used: (.*) MB/i, parts[4]);
+    let cost           = calCostForInvocation(memorySize, billedDuration);
 
     let dimensions = [
       { Name: "Function", Value: functionName },
@@ -163,6 +171,7 @@ let parseUsageMetrics = function (functionName, version, logEvent) {
       makeMetric(billedDuration, "milliseconds", "BilledDuration", dimensions, namespace),
       makeMetric(memorySize, "megabytes", "MemorySize", dimensions, namespace),
       makeMetric(memoryUsed, "megabytes", "MemoryUsed", dimensions, namespace),
+      makeMetric(cost, "milliseconds", "CostInDollars", dimensions, namespace),
     ];
   }
 
