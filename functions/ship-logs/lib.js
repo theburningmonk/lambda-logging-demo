@@ -49,12 +49,16 @@ let publishMetrics = co.wrap(function* (metrics) {
 let processAll = co.wrap(function* (logGroup, logStream, logEvents) {
   let result = parse.all(logGroup, logStream, logEvents);
 
-  if (result.logs) {
+  if (result.logs && result.logs.length > 0) {
     yield sendLogs(result.logs);
   }
 
-  if (result.customMetrics) {
+  if (result.customMetrics && result.customMetrics.length > 0) {
     yield publishMetrics(result.customMetrics);
+  }
+
+  if (result.usageMetrics && result.usageMetrics.length > 0) {
+    yield publishMetrics(result.usageMetrics);
   }
 });
 

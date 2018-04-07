@@ -39,7 +39,7 @@ let subscribe = co.wrap(function* (logGroupName) {
     destinationArn : destFuncArn,
     logGroupName   : logGroupName,
     filterName     : 'ship-logs',
-    filterPattern  : '[timestamp=*Z, request_id="*-*", event]'
+    filterPattern  : ''
   };
 
   try {

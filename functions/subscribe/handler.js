@@ -32,7 +32,7 @@ let subscribe = function* (logGroupName) {
     destinationArn : getDestFuncArn(),
     logGroupName   : logGroupName,
     filterName     : 'ship-logs',
-    filterPattern  : '[timestamp=*Z, request_id="*-*", event]'
+    filterPattern  : ''
   };
 
   yield cloudWatchLogs.putSubscriptionFilterAsync(options);
