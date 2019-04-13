@@ -1,46 +1,43 @@
-'use strict';
+const Promise = require('bluebird')
+const parse   = require('./parse')
+const net     = require('net')
+const host    = process.env.logstash_host
+const port    = process.env.logstash_port
+const token   = process.env.token
 
-const co      = require('co');
-const Promise = require('bluebird');
-const parse   = require('./parse');
-const net     = require('net');
-const host    = process.env.logstash_host;
-const port    = process.env.logstash_port;
-const token   = process.env.token;
+const processAll = async (logGroup, logStream, logEvents) => {
+  const lambdaVersion = parse.lambdaVersion(logStream);
+  const functionName  = parse.functionName(logGroup);
 
-let processAll = co.wrap(function* (logGroup, logStream, logEvents) {
-  let lambdaVersion = parse.lambdaVersion(logStream);
-  let functionName  = parse.functionName(logGroup);
+  await new Promise((resolve, reject) => {
+    const socket = net.connect(port, host, function() {
+      socket.setEncoding('utf8')
 
-  yield new Promise((resolve, reject) => {
-    let socket = net.connect(port, host, function() {
-      socket.setEncoding('utf8');
-
-      for (let logEvent of logEvents) {
+      for (const logEvent of logEvents) {
         try {
-          let log = parse.logMessage(logEvent);
+          const log = parse.logMessage(logEvent)
           if (log) {
-            log.logStream     = logStream;
-            log.logGroup      = logGroup;
-            log.functionName  = functionName;
-            log.lambdaVersion = lambdaVersion;
-            log.fields        = log.fields || {};
-            log.type          = "cloudwatch";
-            log.token         = token;
+            log.logStream     = logStream
+            log.logGroup      = logGroup
+            log.functionName  = functionName
+            log.lambdaVersion = lambdaVersion
+            log.fields        = log.fields || {}
+            log.type          = "cloudwatch"
+            log.token         = token
 
-            socket.write(JSON.stringify(log) + '\n');
+            socket.write(JSON.stringify(log) + '\n')
           }
         
         } catch (err) {
-          console.error(err.message);
+          console.error(err.message)
         }
       }
 
-      socket.end();
+      socket.end()
 
-      resolve();
-    });
-  });
-});
+      resolve()
+    })
+  })
+}
 
-module.exports = processAll;
+module.exports = processAll
