@@ -1,9 +1,8 @@
 # lambda-logging-demo
 
-A group of Lambda functions for:
+A Lambda function for:
+
 * shipping logs to Logz.io (hosted ELK stack)
-* auto-subscribe new log groups to the aforementioned function so you don't have to subscribe them manually
-* auto-updates the retention policy of new log groups to 7 days (configurable)
 
 ## Deployment
 
@@ -27,8 +26,4 @@ ship-logs-to-logzio:
 
 2. run `./build.sh deploy dev` to deploy to a stage called "dev"
 
-## Updating existing log groups
-
-1. open the `process_all.js` script, and fill in the missing configuration values
-
-2. run `node process_all.js`
+3. once deployed, take a note of the ARN for the function. Now you can deploy the `auto-subscribe-log-group-to-arn` app from the Serverless Applciation Repository ([here](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:374852340823:applications~auto-subscribe-log-group-to-arn)) and pass in the ARN for the `ship-logs-to-logzio` function.
