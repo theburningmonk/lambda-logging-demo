@@ -6,11 +6,11 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12.x
   stage: dev
   region: us-east-1
   versionFunctions: false
-  
+
 functions:
   ship-logs-to-logzio:
     handler: functions/ship-logs/handler.handler
@@ -18,7 +18,7 @@ functions:
     memorySize: 128
     environment:
       logstash_host: listener.logz.io
-      logstash_port: 5015
+      logstash_port: 5050
       token: rBrdvFgguTSCLHhFfLDmyuGTQZhDYyZt
 
 resources:

@@ -33,18 +33,18 @@ const parseLogMessage = function (logEvent) {
     return null
   }
 
-  let parts     = logEvent.message.split('\t', 3)
-  let timestamp = parts[0]
-  let requestId = parts[1]
-  let event     = parts[2]
-  
+  // NOTE: This is how the event actually looks now: "INFO\t{"level":"DEBUG","message":"generated HTML 18255 bytes"}\n"
+  // calling JSON.parse operation on the event would fail
+  const { event, timestamp, request_id: requestId } = logEvent.extractedFields;
+  const splittedEvent = event.split('\t')[1]; // Anything after \t (eg: "INFO\t{"level":"DEBUG","message":"generated HTML 18255 bytes"}\n")
+
   let fields = tryParseJson(event)
   if (fields) {
     fields.requestId = requestId
 
     let level = (fields.level || 'debug').toLowerCase()
     let message = fields.message
-  
+
     // level and message are lifted out, so no need to keep them there
     delete fields.level
     delete fields.message
