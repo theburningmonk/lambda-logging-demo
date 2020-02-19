@@ -38,7 +38,7 @@ const parseLogMessage = function (logEvent) {
   const { event, timestamp, request_id: requestId } = logEvent.extractedFields;
   const splittedEvent = event.split('\t')[1]; // Anything after \t (eg: "INFO\t{"level":"DEBUG","message":"generated HTML 18255 bytes"}\n")
 
-  let fields = tryParseJson(event)
+  let fields = tryParseJson(splittedEvent)
   if (fields) {
     fields.requestId = requestId
 
